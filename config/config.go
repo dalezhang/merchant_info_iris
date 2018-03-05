@@ -3,9 +3,10 @@ package config
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/dalezhang/merchant_info_iris/utils"
 	"io/ioutil"
 	"os"
+
+	"github.com/dalezhang/merchant_info_iris/utils"
 	//"path/filepath"
 	"regexp"
 	//"strings"
@@ -29,8 +30,10 @@ func initJSON() {
 
 	if err := json.Unmarshal(bytes, &jsonData); err != nil {
 		fmt.Println("invalid config: ", err.Error())
+		panic(err)
 		os.Exit(-1)
 	}
+	fmt.Println(jsonData)
 }
 
 type dBConfig struct {
@@ -51,8 +54,9 @@ func initDB() {
 }
 
 type serverConfig struct {
-	Env  string
-	Port int
+	Env       string
+	Port      int
+	APIPrefix string
 }
 
 // ServerConfig 服务器相关配置

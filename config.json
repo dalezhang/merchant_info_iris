@@ -1,14 +1,13 @@
 {
   "database": {
     "Database"     : "merchant_info_development",
-    "User"         : "dale",
-    "Password"     : "",
     "Host"         : "localhost",/*数据库ip*/
-    "Port"         : 27017,       /*数据库端口*/
+    "Port"         : 27017       /*数据库端口*/
   },
 	"go": {
     "Env"                 : "development",        /*模式(开发，测试，产品)*/
-    Port                : 8082,
+    "APIPrefix"           : "/api", /*api服务请求前缀*/
+    "Port"                : 8082
   }
 
 }

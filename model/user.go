@@ -1,12 +1,5 @@
 package model
 
-import (
-	//"fmt"
-	//"log"
-	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
-)
-
 type User struct {
 	Name        string
 	Email       string
@@ -38,15 +31,3 @@ type AllUser struct {
 //}
 //return all_user.Users
 //}
-
-func GetUsers() []User {
-
-	var all_user AllUser
-	result := User{}
-	iter := db.Find(bson.M{"_type": "User"}).Iter()
-	for iter.Next(&result) {
-		all_user.Users = append(all_user.Users, result)
-	}
-	return all_user.Users
-
-}

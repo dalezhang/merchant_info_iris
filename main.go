@@ -1,31 +1,34 @@
 package main
 
 import (
+	"strconv"
+
 	"github.com/asaskevich/govalidator"
 	"github.com/dalezhang/merchant_info_iris/config"
 	"github.com/dalezhang/merchant_info_iris/model"
 	"github.com/dalezhang/merchant_info_iris/route"
+	//	"github.com/dalezhang/merchant_info_iris/utils"
 	"github.com/kataras/iris"
 	"github.com/kataras/iris/middleware/logger"
 	"gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	//"gopkg.in/mgo.v2/bson"
+	//	"fmt"
+	"time"
 )
 
 func init() {
-	dbSession, err := mgo.Dial(config.DBConfig.URL) //连接数据库
+	globalMgoSession, err := mgo.DialWithTimeout(config.DBConfig.URL, 10*time.Second) //连接数据库
 	if err != nil {
 		panic(err)
 	}
-	defer dbSession.Close()
-	dbSession.SetMode(mgo.Monotonic, true)
-	db := dbSession.DB(config.DBConfig.Database).C("application_records") //数据库名称
+	// defer dbSession.Close()
+	globalMgoSession.SetMode(mgo.Monotonic, true)
+	globalMgoSession.SetPoolLimit(300)
+	//	collection := globalMgoSession.DB(config.DBConfig.Database).C("application_records") //数据库名称
 
-	if config.ServerConfig.Env == model.DevelopmentMode {
-		db.LogMode(true)
-	}
-	model.DB = db
+	model.GlobalMgoSession = globalMgoSession
 
-	govalidator.SetFieldsRequiredByDefault(true)
+	govalidator.SetFieldsRequiredByDefault(false)
 }
 
 func main() {
